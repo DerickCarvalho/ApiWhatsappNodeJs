@@ -1,25 +1,17 @@
 const app = require('./src/app');
-const https = require('https');
-const fs = require('fs');
 const { baseWebhookURL } = require('./src/config');
 require('dotenv').config();
 
-const privateKey = fs.readFileSync('./certificados/private.key', 'utf8');
-const certificate = fs.readFileSync('./certificados/certificate.pem', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
-
 // Start the server
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 
 // Check if BASE_WEBHOOK_URL environment variable is available
 if (!baseWebhookURL) {
-  console.log('A variável blobal BASE_WEBHOOK_URL não está setada... É importante verificá-la mais tarde!');
-  // process.exit(1); // Terminate the application with an error code
+  console.error('A variável BASE_WEBHOOK_URL não está declarada no escopo... Considere verificar isso mais pra frente..');
+  // process.exit(1) // Terminate the application with an error code
 }
 
-const httpsServer = https.createServer(credentials, app);
-
-httpsServer.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-  console.log('https://sitedotheg.site:4343/api-docs/');
+  console.log('==============[ ACESSO ]==============\n\nSERVIDOR -> https://sitedotheg.site/api-wpp/api-docs/\nLOCAL -> http://127.0.0.1:4343/api-docs/\n\n==============[ ACESSO ]==============');
 });
